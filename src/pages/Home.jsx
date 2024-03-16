@@ -9,42 +9,41 @@ const Home = () => {
   
   const API_URL = "https://fakestoreapi.com/products";
   const [loading, setLoading] = useState("false"); 
-  const [posts, setPosts] = useState([]); 
-
-  useEffect(() => {
-    fetchProductData(); 
-  }, [])
+  const [items, setItems] = useState([]); 
   
-
   async function fetchProductData() {
     setLoading(true); 
     try {
       const res = await fetch(API_URL); 
       const data = await res.json(); 
-      setPosts(data); 
+      setItems(data); 
       
     } catch (error) {
       <div>Error Occur</div>
-      setPosts([]); 
+      setItems([]); 
     }
     setLoading(false); 
   }
+
+  useEffect(() => {
+    fetchProductData(); 
+  }, [])
 
   return (
     <div>
       {
         loading?<Spinner/>:
-        posts.length > 0 ?
+        items.length > 0 ?
         (
-          <div>
+          <div className="grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-6xl mx-auto p-2 space-y-10 space-x-5">
             {
-              posts.map( (post)=>(
-                <Product key={post.id} post={post}/>
+              items.map( (item)=>(   
+                <Product key={item.id} item={item}/>
               ))
             }
           </div>
         ):
-        <div>
+        <div className="flex justify-center items-center">
           <p>No Data Found</p>
         </div>
       }
